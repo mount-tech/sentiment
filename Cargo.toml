@@ -2,6 +2,12 @@
 name = "sentiment"
 version = "0.1.0"
 authors = ["shockham <samuel.hockham@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/mount-research/sentiment"
+homepage = "https://github.com/mount-research/sentiment"
+documentation = "https://docs.rs/sentiment"
+description = "Simple persistent generic HashMap/Key-value store"
 
 [dependencies]
 regex = "0.2"
