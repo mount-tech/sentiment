@@ -9,7 +9,7 @@ use std::borrow::Borrow;
 use serde_json::Value;
 
 // include the json in the bin
-const AFFIN:&'static [u8; 32811] = include_bytes!("./afinn.json");
+const AFFIN: &'static [u8; 32811] = include_bytes!("./afinn.json");
 
 lazy_static! {
     static ref AFFIN_VALUE: Value = {
@@ -18,7 +18,7 @@ lazy_static! {
     };
 }
 
-/// Struct for return the outcome of individual sentiments 
+/// Struct for return the outcome of individual sentiments
 pub struct Sentiment {
     /// The sentiment score
     pub score: f32,
@@ -47,7 +47,11 @@ fn tokenize_with_no_punctuation(phrase: String) -> Vec<String> {
     let no_punctuation = re.replace_all(phrase.as_str(), " ");
     let no_punctuation = re2.replace_all(no_punctuation.borrow(), " ");
 
-    no_punctuation.to_lowercase().split(" ").map(|s| s.to_string()).collect()
+    no_punctuation
+        .to_lowercase()
+        .split(" ")
+        .map(|s| s.to_string())
+        .collect()
 }
 
 /// Calculates the negativity of a sentence
@@ -63,7 +67,7 @@ pub fn negativity(phrase: String) -> Sentiment {
             let diff = val.as_f64().unwrap() as f32;
             if diff < 0f32 {
                 score -= diff;
-                words.push(word); 
+                words.push(word);
             }
         }
     }
@@ -88,7 +92,7 @@ pub fn positivity(phrase: String) -> Sentiment {
             let diff = val.as_f64().unwrap() as f32;
             if diff > 0f32 {
                 score += diff;
-                words.push(word); 
+                words.push(word);
             }
         }
     }
@@ -122,7 +126,10 @@ fn decode_affin() {
 #[test]
 fn tokenize() {
     let tokens = tokenize_with_no_punctuation("staRt,./     {middle//////end".to_string());
-    assert_eq!(tokens, vec!["start".to_string(), "middle".to_string(), "end".to_string()]);
+    assert_eq!(
+        tokens,
+        vec!["start".to_string(), "middle".to_string(), "end".to_string()]
+    );
 }
 
 #[test]
