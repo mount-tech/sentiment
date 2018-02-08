@@ -19,7 +19,6 @@ lazy_static! {
 }
 
 /// Struct for return the outcome of individual sentiments
-#[derive(Debug, Clone)]
 pub struct Sentiment {
     /// The sentiment score
     pub score: f32,
@@ -30,7 +29,6 @@ pub struct Sentiment {
 }
 
 /// Struct for return the outcome of analysis
-#[derive(Debug, Clone)]
 pub struct Analysis {
     /// The sentiment score
     pub score: f32,
@@ -43,8 +41,12 @@ pub struct Analysis {
 }
 
 fn tokenize_with_no_punctuation(phrase: String) -> Vec<String> {
-    let re = Regex::new(r"[^a-zA-Z0 -]+").unwrap();
-    let re2 = Regex::new(r" {2,}").unwrap();
+    lazy_static! {
+        static ref re: Regex = Regex::new(r"[^a-zA-Z0 -]+").unwrap();
+    }
+    lazy_static! {
+        static ref re2: Regex = Regex::new(r" {2,}").unwrap();
+    }
 
     let no_punctuation = re.replace_all(phrase.as_str(), " ");
     let no_punctuation = re2.replace_all(no_punctuation.borrow(), " ");
