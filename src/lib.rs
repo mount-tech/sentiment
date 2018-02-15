@@ -112,9 +112,9 @@ pub fn positivity<T>(phrase: T) -> Sentiment
     }
 
     Sentiment {
-        score: score,
+        score,
         comparative: score / tokens_len,
-        words: words,
+        words,
     }
 }
 
