@@ -19,6 +19,7 @@ lazy_static! {
 }
 
 /// Struct for return the outcome of individual sentiments
+#[derive(Debug, Clone)]
 pub struct Sentiment {
     /// The sentiment score
     pub score: f32,
@@ -29,6 +30,7 @@ pub struct Sentiment {
 }
 
 /// Struct for return the outcome of analysis
+#[derive(Debug, Clone)]
 pub struct Analysis {
     /// The sentiment score
     pub score: f32,
