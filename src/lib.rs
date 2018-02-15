@@ -101,9 +101,8 @@ pub fn positivity<T>(phrase: T) -> Sentiment
     let mut score = 0f32;
     let mut words = Vec::new();
 
-    for t in tokens {
-        let word = t.clone();
-        if let Value::Number(ref val) = AFFIN_VALUE[t] {
+    for word in tokens {
+        if let Value::Number(ref val) = AFFIN_VALUE[&word] {
             let diff = val.as_f64().unwrap() as f32;
             if diff > 0f32 {
                 score += diff;
