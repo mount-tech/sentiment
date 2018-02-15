@@ -40,16 +40,19 @@ pub struct Analysis {
     pub negative: Sentiment,
 }
 
-fn tokenize_with_no_punctuation(phrase: String) -> Vec<String> {
+fn tokenize_with_no_punctuation<T>(phrase: T) -> Vec<String>
+    where T: AsRef<str>
+{
+    let phrase = phrase.as_ref();
     lazy_static! {
-        static ref re: Regex = Regex::new(r"[^a-zA-Z0 -]+").unwrap();
+        static ref RE: Regex = Regex::new(r"[^a-zA-Z0 -]+").unwrap();
     }
     lazy_static! {
-        static ref re2: Regex = Regex::new(r" {2,}").unwrap();
+        static ref RE2: Regex = Regex::new(r" {2,}").unwrap();
     }
 
-    let no_punctuation = re.replace_all(phrase.as_str(), " ");
-    let no_punctuation = re2.replace_all(no_punctuation.borrow(), " ");
+    let no_punctuation = RE.replace_all(phrase, " ");
+    let no_punctuation = RE2.replace_all(no_punctuation.borrow(), " ");
 
     no_punctuation
         .to_lowercase()
@@ -59,15 +62,19 @@ fn tokenize_with_no_punctuation(phrase: String) -> Vec<String> {
 }
 
 /// Calculates the negativity of a sentence
-pub fn negativity(phrase: String) -> Sentiment {
+pub fn negativity<T>(phrase: T) -> Sentiment
+    where T: AsRef<str>
+
+{
+    let phrase = phrase.as_ref();
+
     let tokens = tokenize_with_no_punctuation(phrase);
     let tokens_len = tokens.len() as f32;
     let mut score = 0f32;
     let mut words = Vec::new();
 
-    for t in tokens {
-        let word = t.clone();
-        if let Value::Number(ref val) = AFFIN_VALUE[t] {
+    for word in tokens {
+        if let Value::Number(ref val) = AFFIN_VALUE[&word] {
             let diff = val.as_f64().unwrap() as f32;
             if diff < 0f32 {
                 score -= diff;
@@ -77,14 +84,18 @@ pub fn negativity(phrase: String) -> Sentiment {
     }
 
     Sentiment {
-        score: score,
+        score,
         comparative: score / tokens_len,
-        words: words,
+        words,
     }
 }
 
 /// Calculates the positivity of a sentence
-pub fn positivity(phrase: String) -> Sentiment {
+pub fn positivity<T>(phrase: T) -> Sentiment
+    where T: AsRef<str>
+{
+    let phrase = phrase.as_ref();
+
     let tokens = tokenize_with_no_punctuation(phrase);
     let tokens_len = tokens.len() as f32;
     let mut score = 0f32;
@@ -109,9 +120,13 @@ pub fn positivity(phrase: String) -> Sentiment {
 }
 
 /// Calculates the overall sentiment
-pub fn analyze(phrase: String) -> Analysis {
-    let neg = negativity(phrase.clone());
-    let pos = positivity(phrase.clone());
+pub fn analyze<T>(phrase: T) -> Analysis
+    where T: AsRef<str>
+{
+    let phrase = phrase.as_ref();
+
+    let neg = negativity(phrase);
+    let pos = positivity(phrase);
 
     Analysis {
         score: pos.score - neg.score,
