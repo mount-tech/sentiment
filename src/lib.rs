@@ -9,7 +9,7 @@ use std::borrow::Borrow;
 use serde_json::Value;
 
 // include the json in the bin
-const AFFIN: &'static [u8; 32811] = include_bytes!("./afinn.json");
+const AFFIN: &[u8; 32811] = include_bytes!("./afinn.json");
 
 lazy_static! {
     static ref AFFIN_VALUE: Value = {
