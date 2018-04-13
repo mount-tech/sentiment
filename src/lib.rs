@@ -40,11 +40,11 @@ pub struct Analysis {
     pub negative: Sentiment,
 }
 
-fn tokenize_with_no_punctuation(phrase: String) -> Vec<String> {
+fn tokenize_with_no_punctuation(phrase: &str) -> Vec<String> {
     let re = Regex::new(r"[^a-zA-Z0 -]+").unwrap();
     let re2 = Regex::new(r" {2,}").unwrap();
 
-    let no_punctuation = re.replace_all(phrase.as_str(), " ");
+    let no_punctuation = re.replace_all(phrase, " ");
     let no_punctuation = re2.replace_all(no_punctuation.borrow(), " ");
 
     no_punctuation
@@ -56,7 +56,7 @@ fn tokenize_with_no_punctuation(phrase: String) -> Vec<String> {
 
 /// Calculates the negativity of a sentence
 pub fn negativity(phrase: String) -> Sentiment {
-    let tokens = tokenize_with_no_punctuation(phrase);
+    let tokens = tokenize_with_no_punctuation(phrase.as_str());
     let tokens_len = tokens.len() as f32;
     let mut score = 0f32;
     let mut words = Vec::new();
@@ -81,7 +81,7 @@ pub fn negativity(phrase: String) -> Sentiment {
 
 /// Calculates the positivity of a sentence
 pub fn positivity(phrase: String) -> Sentiment {
-    let tokens = tokenize_with_no_punctuation(phrase);
+    let tokens = tokenize_with_no_punctuation(phrase.as_str());
     let tokens_len = tokens.len() as f32;
     let mut score = 0f32;
     let mut words = Vec::new();
@@ -125,7 +125,7 @@ fn decode_affin() {
 
 #[test]
 fn tokenize() {
-    let tokens = tokenize_with_no_punctuation("staRt,./     {middle//////end".to_string());
+    let tokens = tokenize_with_no_punctuation("staRt,./     {middle//////end");
     assert_eq!(
         tokens,
         vec!["start".to_string(), "middle".to_string(), "end".to_string()]
