@@ -55,8 +55,8 @@ fn tokenize_with_no_punctuation(phrase: &str) -> Vec<String> {
 }
 
 /// Calculates the negativity of a sentence
-pub fn negativity(phrase: String) -> Sentiment {
-    let tokens = tokenize_with_no_punctuation(phrase.as_str());
+pub fn negativity(phrase: &str) -> Sentiment {
+    let tokens = tokenize_with_no_punctuation(phrase);
     let tokens_len = tokens.len() as f32;
     let mut score = 0f32;
     let mut words = Vec::new();
@@ -80,8 +80,8 @@ pub fn negativity(phrase: String) -> Sentiment {
 }
 
 /// Calculates the positivity of a sentence
-pub fn positivity(phrase: String) -> Sentiment {
-    let tokens = tokenize_with_no_punctuation(phrase.as_str());
+pub fn positivity(phrase: &str) -> Sentiment {
+    let tokens = tokenize_with_no_punctuation(phrase);
     let tokens_len = tokens.len() as f32;
     let mut score = 0f32;
     let mut words = Vec::new();
@@ -105,9 +105,9 @@ pub fn positivity(phrase: String) -> Sentiment {
 }
 
 /// Calculates the overall sentiment
-pub fn analyze(phrase: String) -> Analysis {
-    let neg = negativity(phrase.clone());
-    let pos = positivity(phrase.clone());
+pub fn analyze(phrase: &str) -> Analysis {
+    let neg = negativity(phrase);
+    let pos = positivity(phrase);
 
     Analysis {
         score: pos.score - neg.score,
@@ -134,20 +134,20 @@ fn tokenize() {
 
 #[test]
 fn test_negativity() {
-    let sentiment = negativity("I do not like jam tarts".to_string());
+    let sentiment = negativity("I do not like jam tarts");
     assert_eq!(sentiment.score, 0f32);
     assert_eq!(sentiment.words, Vec::<String>::new());
 }
 
 #[test]
 fn test_positivity() {
-    let sentiment = positivity("I do not like jam tarts".to_string());
+    let sentiment = positivity("I do not like jam tarts");
     assert_eq!(sentiment.score, 2f32);
     assert_eq!(sentiment.words, vec!["like"]);
 }
 
 #[test]
 fn test_analyze() {
-    let analysis = analyze("I do not like jam tarts".to_string());
+    let analysis = analyze("I do not like jam tarts");
     assert_eq!(analysis.score, 2f32);
 }
