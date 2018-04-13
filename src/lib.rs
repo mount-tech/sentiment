@@ -49,7 +49,7 @@ fn tokenize_with_no_punctuation(phrase: &str) -> Vec<String> {
 
     no_punctuation
         .to_lowercase()
-        .split(" ")
+        .split(' ')
         .map(|s| s.to_string())
         .collect()
 }
