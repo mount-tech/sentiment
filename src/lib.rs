@@ -73,9 +73,9 @@ pub fn negativity(phrase: String) -> Sentiment {
     }
 
     Sentiment {
-        score: score,
+        score,
         comparative: score / tokens_len,
-        words: words,
+        words,
     }
 }
 
@@ -98,9 +98,9 @@ pub fn positivity(phrase: String) -> Sentiment {
     }
 
     Sentiment {
-        score: score,
+        score,
         comparative: score / tokens_len,
-        words: words,
+        words,
     }
 }
 
