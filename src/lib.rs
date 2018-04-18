@@ -3,10 +3,10 @@ extern crate lazy_static;
 extern crate regex;
 extern crate serde_json;
 
-use std::str;
 use regex::Regex;
-use std::borrow::Borrow;
 use serde_json::Value;
+use std::borrow::Borrow;
+use std::str;
 
 // include the json in the bin
 const AFFIN: &[u8; 32811] = include_bytes!("./afinn.json");
